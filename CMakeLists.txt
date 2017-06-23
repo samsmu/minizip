@@ -13,17 +13,46 @@ if(NOT DEFINED CMAKE_MACOSX_RPATH)
   set(CMAKE_MACOSX_RPATH 0)
 endif()
 
-project("minizip")
+#-----------------------------------------------------------------------------
+# Superbuild Option - Enabled by default
+#-----------------------------------------------------------------------------
+
+set(MY_PROJECT_NAME minizip)
+
+option(${MY_PROJECT_NAME}_USE_SUPERBUILD "Build ${MY_PROJECT_NAME} and the projects it depends on via SuperBuild.cmake." ON)
+
+if(${MY_PROJECT_NAME}_USE_SUPERBUILD)
+  project(${MY_PROJECT_NAME}-superbuild)
+  set(${MY_PROJECT_NAME}_SOURCE_DIR ${PROJECT_SOURCE_DIR})
+  set(${MY_PROJECT_NAME}_BINARY_DIR ${PROJECT_BINARY_DIR})
+else()
+  project(${MY_PROJECT_NAME})
+endif()
+
+#-----------------------------------------------------------------------------
+# Superbuild script
+#-----------------------------------------------------------------------------
+
+if(${MY_PROJECT_NAME}_USE_SUPERBUILD)
+  include("${CMAKE_CURRENT_SOURCE_DIR}/SuperBuild.cmake")
+  return()
+endif()
+
+#-----------------------------------------------------------------------------
+# ${MY_PROJECT_NAME}_SUPERBUILD_BINARY_DIR
+#-----------------------------------------------------------------------------
+
+# If ${MY_PROJECT_NAME}_SUPERBUILD_BINARY_DIR isn't defined, it means this project is
+# *NOT* build using Superbuild. In that specific case, ${MY_PROJECT_NAME}_SUPERBUILD_BINARY_DIR
+# should default to PROJECT_BINARY_DIR
+if(NOT DEFINED ${PROJECT_NAME}_SUPERBUILD_BINARY_DIR)
+  set(${PROJECT_NAME}_SUPERBUILD_BINARY_DIR ${PROJECT_BINARY_DIR})
+endif()
+
+find_package(ZLIB REQUIRED)
 
 # set cmake debug postfix to d
 set(CMAKE_DEBUG_POSTFIX "d")
-
-# Ensure correct version of zlib is referenced
-set(ZLIB_ROOT ${DEF_ZLIB_ROOT} CACHE PATH "Parent directory of zlib installation")
-find_package(ZLIB REQUIRED)
-if(ZLIB_FOUND)
-    include_directories(${ZLIB_INCLUDE_DIRS})
-endif()
 
 set(MINIZIP_SRC "crypt.c"
   "ioapi.c"
@@ -57,7 +86,7 @@ endif()
 add_library(minizip ${MINIZIP_SRC} ${MINIZIP_PUBLIC_HEADERS})
 target_link_libraries(minizip ZLIB::ZLIB)
 
-option(USE_AES "enables building of aes library" ON)
+option(USE_AES "enables building of aes library" OFF)
 if(USE_AES)
   set(AES_SRC 
     aes/aescrypt.c
