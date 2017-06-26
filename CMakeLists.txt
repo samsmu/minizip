@@ -69,6 +69,12 @@ add_library(minizip ${MINIZIP_SRC} ${MINIZIP_PUBLIC_HEADERS})
 
 if(${MY_PROJECT_NAME}_USE_SUPERBUILD)
   include("${CMAKE_CURRENT_SOURCE_DIR}/SuperBuild.cmake")
+
+  include_directories("${ZLIB_INCLUDE_DIR}")
+  add_dependencies(minizip ZLIB)
+else()
+  find_package(ZLIB REQUIRED)
+  target_link_libraries(minizip ZLIB::ZLIB)
 endif()
 
 #-----------------------------------------------------------------------------
@@ -81,9 +87,6 @@ endif()
 if(NOT DEFINED ${PROJECT_NAME}_SUPERBUILD_BINARY_DIR)
   set(${PROJECT_NAME}_SUPERBUILD_BINARY_DIR ${PROJECT_BINARY_DIR})
 endif()
-
-find_package(ZLIB REQUIRED)
-target_link_libraries(minizip ZLIB::ZLIB)
 
 option(USE_AES "enables building of aes library" OFF)
 if(USE_AES)
