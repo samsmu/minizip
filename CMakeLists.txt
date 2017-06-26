@@ -68,10 +68,12 @@ add_library(minizip ${MINIZIP_SRC} ${MINIZIP_PUBLIC_HEADERS})
 #-----------------------------------------------------------------------------
 
 if(${MY_PROJECT_NAME}_USE_SUPERBUILD)
+  set(ZLIB_LIBRARY )
   include("${CMAKE_CURRENT_SOURCE_DIR}/SuperBuild.cmake")
 
   include_directories("${ZLIB_INCLUDE_DIR}")
   add_dependencies(minizip ZLIB)
+  target_link_libraries(minizip "${ZLIB_LIBRARY}")
 else()
   find_package(ZLIB REQUIRED)
   target_link_libraries(minizip ZLIB::ZLIB)
