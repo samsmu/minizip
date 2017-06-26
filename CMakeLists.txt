@@ -29,28 +29,6 @@ else()
   project(${MY_PROJECT_NAME})
 endif()
 
-#-----------------------------------------------------------------------------
-# Superbuild script
-#-----------------------------------------------------------------------------
-
-if(${MY_PROJECT_NAME}_USE_SUPERBUILD)
-  include("${CMAKE_CURRENT_SOURCE_DIR}/SuperBuild.cmake")
-  return()
-endif()
-
-#-----------------------------------------------------------------------------
-# ${MY_PROJECT_NAME}_SUPERBUILD_BINARY_DIR
-#-----------------------------------------------------------------------------
-
-# If ${MY_PROJECT_NAME}_SUPERBUILD_BINARY_DIR isn't defined, it means this project is
-# *NOT* build using Superbuild. In that specific case, ${MY_PROJECT_NAME}_SUPERBUILD_BINARY_DIR
-# should default to PROJECT_BINARY_DIR
-if(NOT DEFINED ${PROJECT_NAME}_SUPERBUILD_BINARY_DIR)
-  set(${PROJECT_NAME}_SUPERBUILD_BINARY_DIR ${PROJECT_BINARY_DIR})
-endif()
-
-find_package(ZLIB REQUIRED)
-
 # set cmake debug postfix to d
 set(CMAKE_DEBUG_POSTFIX "d")
 
@@ -84,6 +62,27 @@ endif()
 
 # create minizip library
 add_library(minizip ${MINIZIP_SRC} ${MINIZIP_PUBLIC_HEADERS})
+
+#-----------------------------------------------------------------------------
+# Superbuild script
+#-----------------------------------------------------------------------------
+
+if(${MY_PROJECT_NAME}_USE_SUPERBUILD)
+  include("${CMAKE_CURRENT_SOURCE_DIR}/SuperBuild.cmake")
+endif()
+
+#-----------------------------------------------------------------------------
+# ${MY_PROJECT_NAME}_SUPERBUILD_BINARY_DIR
+#-----------------------------------------------------------------------------
+
+# If ${MY_PROJECT_NAME}_SUPERBUILD_BINARY_DIR isn't defined, it means this project is
+# *NOT* build using Superbuild. In that specific case, ${MY_PROJECT_NAME}_SUPERBUILD_BINARY_DIR
+# should default to PROJECT_BINARY_DIR
+if(NOT DEFINED ${PROJECT_NAME}_SUPERBUILD_BINARY_DIR)
+  set(${PROJECT_NAME}_SUPERBUILD_BINARY_DIR ${PROJECT_BINARY_DIR})
+endif()
+
+find_package(ZLIB REQUIRED)
 target_link_libraries(minizip ZLIB::ZLIB)
 
 option(USE_AES "enables building of aes library" OFF)
