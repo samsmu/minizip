@@ -30,36 +30,44 @@
         ${ep_common_cache_default_args}
       DEPENDS ${proj_DEPENDENCIES}
       )
-    set(ZLIB_DIR ${ep_prefix})
-    set(ZLIB_INCLUDE_DIR ${ZLIB_DIR}/include)
+    set(${MY_PROJECT_NAME}_ZLIB_DIR ${ep_prefix})
+    set(${MY_PROJECT_NAME}_ZLIB_INCLUDE_DIR ${${MY_PROJECT_NAME}_ZLIB_DIR}/include)
+    set(${MY_PROJECT_NAME}_ZLIB_LIBRARY_DIR ${${MY_PROJECT_NAME}_ZLIB_DIR}/lib)
+    set(${MY_PROJECT_NAME}_ZLIB_LIBRARY_RELEASE ${${MY_PROJECT_NAME}_ZLIB_LIBRARY_DIR}/zlib.lib)
+    set(${MY_PROJECT_NAME}_ZLIB_LIBRARY_DEBUG ${${MY_PROJECT_NAME}_ZLIB_LIBRARY_DIR}/zlibd.lib)
 
-    install(DIRECTORY ${ZLIB_INCLUDE_DIR}
+    install(DIRECTORY ${${MY_PROJECT_NAME}_ZLIB_INCLUDE_DIR}
             DESTINATION include
             COMPONENT dev)
 
-    find_library(ZLIB_LIBRARY_RELEASE NAMES zlib
-                 PATHS ${ZLIB_DIR}
+    set(lib_path ${${MY_PROJECT_NAME}_ZLIB_DIR})
+
+    find_library(library_release NAMES zlib
+                 PATHS ${lib_path}
                  PATH_SUFFIXES lib lib/Release
                  NO_DEFAULT_PATH)
-    find_library(ZLIB_LIBRARY_DEBUG NAMES zlibd
-                 PATHS ${ZLIB_DIR}
+    find_library(library_debug NAMES zlibd
+                 PATHS ${lib_path}
                  PATH_SUFFIXES lib lib/Debug
                  NO_DEFAULT_PATH)
 
-    set(ZLIB_LIBRARY )
-    if(ZLIB_LIBRARY_RELEASE)
-      list(APPEND ZLIB_LIBRARY ${ZLIB_LIBRARY_RELEASE})
-      install(FILES ${ZLIB_LIBRARY_RELEASE}
+    set(library )
+    if(library_release)
+      list(APPEND library ${library_release})
+      install(FILES ${library_release}
               DESTINATION lib
               CONFIGURATIONS Release
               COMPONENT dev)
     endif()
-    if(ZLIB_LIBRARY_DEBUG)
-      list(APPEND ZLIB_LIBRARY ${ZLIB_LIBRARY_DEBUG})
-      install(FILES ${ZLIB_LIBRARY_DEBUG}
+    if(library_debug)
+      list(APPEND library ${library_debug})
+      install(FILES ${library_debug}
               DESTINATION lib
               CONFIGURATIONS Debug
               COMPONENT dev)
     endif()
+
+    set(${MY_PROJECT_NAME}_LIBRARY ${library})
+
   endif(ZLIB_FOUND)
 
