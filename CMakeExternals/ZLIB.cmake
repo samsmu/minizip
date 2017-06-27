@@ -5,8 +5,6 @@
   set(proj_DEPENDENCIES )
   set(ZLIB_DEPENDS ${proj})
 
-  find_package(ZLIB)
-
   if(ZLIB_FOUND)
   else(ZLIB_FOUND)
     set(additional_cmake_args )
