@@ -60,8 +60,10 @@ if(UNIX)
   add_definitions(-D_FILE_OFFSET_BIT=64)
 endif()
 
+set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+
 # create minizip library
-add_library(minizip ${MINIZIP_SRC} ${MINIZIP_PUBLIC_HEADERS})
+add_library(minizip SHARED ${MINIZIP_SRC} ${MINIZIP_PUBLIC_HEADERS})
 
 #-----------------------------------------------------------------------------
 # Superbuild script
