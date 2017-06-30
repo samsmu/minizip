@@ -19,7 +19,9 @@ endif()
 
 set(MY_PROJECT_NAME minizip)
 
-option(${MY_PROJECT_NAME}_USE_SUPERBUILD "Build ${MY_PROJECT_NAME} and the projects it depends on via SuperBuild.cmake." ON)
+if(NOT UNIX)
+  option(${MY_PROJECT_NAME}_USE_SUPERBUILD "Build ${MY_PROJECT_NAME} and the projects it depends on via SuperBuild.cmake." ON)
+endif()
 
 if(${MY_PROJECT_NAME}_USE_SUPERBUILD)
   project(${MY_PROJECT_NAME}-superbuild)
