@@ -37,7 +37,7 @@
     set(${MY_PROJECT_NAME}_ZLIB_LIBRARY_DEBUG ${${MY_PROJECT_NAME}_ZLIB_LIBRARY_DIR}/zlibd.lib)
 
     install(DIRECTORY ${${MY_PROJECT_NAME}_ZLIB_INCLUDE_DIR}
-            DESTINATION include
+            DESTINATION .
             COMPONENT dev)
 
     set(lib_path ${${MY_PROJECT_NAME}_ZLIB_DIR})
