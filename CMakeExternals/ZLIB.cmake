@@ -8,6 +8,9 @@
   find_package(ZLIB)
 
   if(ZLIB_FOUND)
+    set(${MY_PROJECT_NAME}_ZLIB_INCLUDE_DIR "${ZLIB_INCLUDE_DIR}")
+    set(${MY_PROJECT_NAME}_ZLIB_LIBRARY_RELEASE "${ZLIB_LIBRARY_RELEASE}")
+    set(${MY_PROJECT_NAME}_ZLIB_LIBRARY_DEBUG "${ZLIB_LIBRARY_DEBUG}")
   else(ZLIB_FOUND)
     set(additional_cmake_args )
     if(CTEST_USE_LAUNCHERS)
