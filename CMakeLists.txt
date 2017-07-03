@@ -72,6 +72,7 @@ add_library(minizip SHARED ${MINIZIP_SRC} ${MINIZIP_PUBLIC_HEADERS})
 #-----------------------------------------------------------------------------
 
 if(${MY_PROJECT_NAME}_USE_SUPERBUILD)
+  set(${MY_PROJECT_NAME}_ZLIB_INCLUDE_DIR )
   include("${CMAKE_CURRENT_SOURCE_DIR}/SuperBuild.cmake")
 
   include_directories("${${MY_PROJECT_NAME}_ZLIB_INCLUDE_DIR}")
