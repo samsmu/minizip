@@ -77,7 +77,7 @@ if(${MY_PROJECT_NAME}_USE_SUPERBUILD)
 
   include_directories("${${MY_PROJECT_NAME}_ZLIB_INCLUDE_DIR}")
   add_dependencies(minizip ZLIB)
-  if ($(CMAKE_BUILD_TYPE) STREQUAL "Debug")
+  if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
     target_link_libraries(minizip debug "${${MY_PROJECT_NAME}_ZLIB_LIBRARY_DEBUG}")
   else()
     target_link_libraries(minizip optimized "${${MY_PROJECT_NAME}_ZLIB_LIBRARY_RELEASE}")
