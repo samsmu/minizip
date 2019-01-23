@@ -54,6 +54,13 @@
                  PATH_SUFFIXES lib lib/Debug
                  NO_DEFAULT_PATH)
 
+    set(runtime_path ${${MY_PROJECT_NAME}_ZLIB_DIR}/bin)
+
+    set(runtime_libraries )
+    find_file(runtime_libraries NAMES zlib.dll
+              PATHS ${runtime_path}
+              NO_DEFAULT_PATH)
+
     set(library )
     if(library_release)
       list(APPEND library ${library_release})
@@ -67,6 +74,13 @@
       install(FILES ${library_debug}
               DESTINATION lib
               CONFIGURATIONS Debug
+              COMPONENT dev)
+    endif()
+
+    if(runtime_libraries)
+      install(FILES ${runtime_libraries}
+              DESTINATION bin
+              CONFIGURATIONS Debug Release
               COMPONENT dev)
     endif()
 
